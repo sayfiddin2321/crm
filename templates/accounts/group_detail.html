@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <title>Guruh tafsilotlari</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <style>
+    body {
+       background-color: #bbd8ff;
+    }
+    .card-header.bg-primary-custom {
+      background-color: #004aad !important;
+    }
+    .btn-primary-custom {
+      background-color: #004aad;
+      border-color: #004aad;
+      color: #fff;
+    }
+    .btn-primary-custom:hover {
+      background-color: #00368a;
+      border-color: #00368a;
+    }
+    .btn-outline-primary-custom {
+      color: #004aad;
+      border-color: #004aad;
+    }
+    .btn-outline-primary-custom:hover {
+      background-color: #004aad;
+      color: #fff;
+    }
+    .status-label {
+      transition: all 0.3s ease;
+    }
+    .back-link {
+      display: inline-block;
+      margin: 15px 25px;
+      color: #004aad;
+      font-weight: 600;
+      font-size: 1.5rem;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .back-link:hover {
+      color: #00368a;
+      transform: scale(1.1);
+    }
+    @media(max-width: 576px){
+      .back-link {
+        font-size: 1.2rem;
+        margin: 10px 15px;
+      }
+      .card-header h4 {
+        font-size: 1rem;
+      }
+      .btn {
+        font-size: 0.85rem;
+      }
+      .table {
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+<a href="{% url 'accounts:index' %}" class="back-link">
+  <i class="fa fa-arrow-left"></i>
+</a>
+
+<div class="container mt-3 mb-5">
+
+  <!-- Guruh kartasi -->
+  <div class="card shadow">
+    <div class="card-header bg-primary-custom text-white d-flex justify-content-between align-items-center">
+      <h4 class="mb-0"><i class="fa fa-book me-2"></i> {{ group.name }} guruhi</h4>
+      <a href="{% url 'accounts:group_list' %}" class="btn btn-light btn-sm">
+        <i class="fa fa-arrow-left"></i> Ortga
+      </a>
+    </div>
+    <div class="card-body">
+      <!-- O‘qituvchi -->
+      <h5 class="mb-3 text-primary-custom">
+        <i class="fa fa-chalkboard-teacher me-1"></i> O‘qituvchi:
+      </h5>
+      {% if teacher %}
+        <p><strong>{{ teacher.first_name }} {{ teacher.last_name }}</strong> - {{ teacher.phone }}</p>
+      {% else %}
+        <p class="text-muted">O‘qituvchi biriktirilmagan.</p>
+      {% endif %}
+
+      <!-- O‘quvchilar -->
+      <h5 class="mt-4 text-primary-custom">
+        <i class="fa fa-user-graduate me-1"></i> O‘quvchilar:
+      </h5>
+      {% if students %}
+        <ul class="list-group mb-4">
+          {% for student in students %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              {{ student.first_name }} {{ student.last_name }}
+              <span class="text-muted">{{ student.phone }}</span>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="text-muted">O‘quvchilar biriktirilmagan.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Davomat va baho formasi -->
+ {% if students %}
+<div class="card mt-4 shadow rounded-4">
+  <div class="card-header bg-primary-custom text-white fw-bold">
+    <i class="fa fa-calendar-day me-1"></i> Bugungi sana: {{ today }}
+  </div>
+  <div class="card-body">
+    <form method="post" novalidate>
+      {% csrf_token %}
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle">
+          <thead class="table-light text-center">
+            <tr>
+              <th>F.I.Sh.</th>
+              <th>Telefon</th>
+              <th>Holat</th>
+              <th>Baho (0-100)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for student in students %}
+            <tr>
+              <td>{{ student.first_name }} {{ student.last_name }}</td>
+              <td>{{ student.phone }}</td>
+              <td class="text-center">
+                <input type="checkbox" name="status_{{ student.id }}" class="form-check-input status-checkbox"
+                  data-target="#status_label_{{ student.id }}">
+                <div id="status_label_{{ student.id }}" class="badge bg-secondary mt-2">
+                  ❌ Kelmagan
+                </div>
+              </td>
+              <td>
+                <input type="number" name="score_{{ student.id }}" class="form-control"
+                  min="0" max="100" placeholder="0-100">
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
+        <a href="{% url 'accounts:attendance_list' %}" class="btn btn-outline-primary-custom rounded-pill">
+          <i class="fa fa-list me-1"></i> Barcha Davomatlar
+        </a>
+        <button type="submit" class="btn btn-primary-custom rounded-pill">
+          <i class="fa fa-save me-1"></i> Saqlash
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+<!-- Statistikani ko‘rish tugmasi -->
+<div class="card mt-4 shadow rounded-4">
+  <div class="card-body text-center">
+    <a href="{% url 'accounts:group_attendance_stats' group.id %}" class="btn btn-outline-success btn-lg rounded-pill">
+      <i class="fa fa-chart-bar me-1"></i> Guruh statistikasi
+    </a>
+  </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Checkbox holatini ko‘rsatish -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".status-checkbox").forEach(cb => {
+    cb.addEventListener("change", () => {
+      const label = document.querySelector(cb.dataset.target);
+      if (cb.checked) {
+        label.textContent = "✅ Keldi";
+        label.className = "badge bg-success mt-2";
+      } else {
+        label.textContent = "❌ Kelmagan";
+        label.className = "badge bg-secondary mt-2";
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>O‘qituvchilar ro‘yxati</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        .back-icon {
+            display: inline-block;
+            background: #4378c7;
+            color: #fff;
+            padding: 4px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 1.4rem;
+            margin: 15px;
+            transition: background 0.3s;
+        }
+
+        .back-icon:hover {
+            background: #0b5ed7;
+        }
+
+
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .body-custom {
+            background-color: #bbd8ff;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .teacher-wrapper {
+            width: 90%;
+            max-width: 960px;
+            margin: 50px auto;
+            padding: 0 15px;
+        }
+
+        .teacher-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mt-large {
+            margin-top: 50px;
+        }
+
+        .mb-large {
+            margin-bottom: 24px;
+        }
+
+        .text-main {
+            color: #007bff;
+            font-size: 22px;
+            /* KICHIKLASHTIRILDI desktop uchun */
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-custom {
+            display: inline-block;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s ease, background 0.3s ease;
+            cursor: pointer;
+            font-size: 14px;
+            /* KICHIKLASHTIRILDI desktop uchun */
+        }
+
+        .btn-add {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .btn-add:hover {
+            background-color: #0b5ed7;
+        }
+
+        .btn-edit {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+
+        .btn-edit:hover {
+            background-color: #0b5ed7;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        .me-small {
+            margin-right: 8px;
+        }
+
+        .teacher-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .teacher-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .teacher-item {
+            border-bottom: 1px solid #e9ecef;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s ease;
+            font-size: 14px;
+            /* KICHIKLASHTIRILDI desktop uchun */
+        }
+
+        .teacher-item:hover {
+            background-color: #f1f5ff;
+        }
+
+        .teacher-item:last-child {
+            border-bottom: none;
+        }
+
+        .text-secondary {
+            color: #6c757d;
+            font-size: 12px;
+            /* KICHIKLASHTIRILDI desktop uchun */
+        }
+
+        .teacher-link {
+            text-decoration: none;
+        }
+
+        .teacher-link:hover {
+            text-decoration: none;
+        }
+
+        .teacher-alert {
+            background-color: #d1e7dd;
+            border: 1px solid #badbcc;
+            color: #0f5132;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: 500;
+            font-size: 14px;
+            /* KICHIKLASHTIRILDI desktop uchun */
+        }
+
+        .teacher-actions a.btn-custom:hover {
+            transform: scale(1.1);
+        }
+
+        .small-icon {
+            font-size: 12px;
+            margin-right: 4px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .teacher-wrapper {
+                width: 100%;
+                margin: 0;
+                padding: 10px;
+            }
+
+            .teacher-item {
+                flex-direction: column;
+                align-items: flex-start;
+                font-size: 16px;
+                /* KATTAROQ QILINDI mobil uchun */
+            }
+
+            .text-main {
+                font-size: 24px;
+                /* KATTAROQ QILINDI mobil uchun */
+            }
+
+            .btn-custom {
+                width: 100%;
+                text-align: center;
+                font-size: 16px;
+                /* KATTAROQ QILINDI mobil uchun */
+            }
+
+            .text-secondary {
+                font-size: 14px;
+                /* KATTAROQ QILINDI mobil uchun */
+            }
+        }
+    </style>
+</head>
+
+<body class="body-custom">
+    <a href="{% url 'accounts:index' %}" class="back-icon">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <div class="teacher-wrapper mt-large">
+        <div class="teacher-header mb-large">
+            <h1 class="text-main"><i class="fa fa-book"></i> O‘qituvchilar ro‘yxati</h1>
+            <a href="{% url 'accounts:add_teacher' %}" class="btn-custom btn-add">
+                <i class="fa fa-plus"></i> O‘qituvchi qo‘shish
+            </a>
+        </div>
+
+        {% if teachers %}
+        <div class="teacher-card">
+            <ul class="teacher-list">
+                {% for teacher in teachers %}
+                <li class="teacher-item">
+                    <div>
+                        <h5>
+                            <a href="{% url 'accounts:teacher_detail' teacher.id %}" class="teacher-link text-main">
+                                {{ teacher.first_name }} {{ teacher.last_name }}
+                            </a>
+                        </h5>
+                        <p class="text-secondary">
+                            <i class="fa fa-phone small-icon"></i> Telefon: {{ teacher.phone }}
+                        </p>
+                    </div>
+                    <div class="teacher-actions">
+                        <a href="{% url 'accounts:edit_item_role' 'teacher' teacher.id %}"
+                            class="btn-custom btn-edit me-small">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a href="{% url 'accounts:delete_item' 'teacher' teacher.id %}" class="btn-custom btn-delete"
+                            onclick="return confirm('Rostdan ham o‘chirmoqchimisiz?')">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <div class="teacher-alert" role="alert">
+            O‘qituvchi topilmadi.
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

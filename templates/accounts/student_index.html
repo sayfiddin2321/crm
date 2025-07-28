@@ -1,0 +1,432 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+  <meta charset="UTF-8">
+  <title>🎓 O‘quvchi Profil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <style>
+    .ortga-qaytish {
+      margin-top: 10px !important;
+      margin-left: 30px !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #0d6efd;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 1.6rem;
+      transition: all 0.3s ease;
+    }
+
+   
+
+   
+
+    @media (max-width: 768px) {
+      .nav-tabs .nav-link {
+        font-size: 12px;
+        padding: 6px 8px;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-light" style=" background-color: #bbd8ff !important;">
+  <a href="/" class="ortga-qaytish">
+    <i class="fa fa-arrow-left"></i>
+  </a>
+
+  <div class="container mt-5 mb-4">
+    <div class="card shadow-lg rounded-4 p-4">
+      <h2 class="text-center text-primary mb-4"><i class="fa fa-graduation-cap"></i> O‘quvchi Profil Sahifasi</h2>
+
+      <!-- Tabs menyu -->
+  <!-- Tabs menyu -->
+<!-- Trigger button (icon) -->
+<button class="btn btn-primary my-2" type="button" data-bs-toggle="collapse" data-bs-target="#tabsCard" aria-expanded="false" aria-controls="tabsCard">
+  <i class="fa fa-bars"></i> Menu
+</button>
+
+<!-- Card ichida tabs -->
+<div class="collapse" id="tabsCard">
+  <div class="card shadow rounded">
+    <div class="card-body p-2">
+      <div class="overflow-x-auto">
+        <ul class="nav nav-tabs flex-nowrap" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">
+              <i class="fa fa-user"></i><br>Ma'lumotlar
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#group" type="button" role="tab">
+              <i class="fa fa-users"></i><br>Guruh
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#attendance" type="button" role="tab">
+              <i class="fa fa-calendar-check"></i><br>Davomat
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab">
+              <i class="fa fa-bell"></i><br>Bildirishnomalar
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#coin" type="button" role="tab">
+              <i class="fa fa-coins"></i><br>NANOcoin
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tests" type="button" role="tab">
+              <i class="fa fa-file-alt"></i><br>Testlar
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#results" type="button" role="tab">
+              <i class="fa fa-chart-bar"></i><br>Natijalar
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+      <!-- Tabs kontent -->
+      <div class="tab-content mt-4" id="profileTabsContent">
+        <!-- 1. Ma'lumotlar -->
+        <div class="tab-pane fade show active" id="info">
+          <p><i class="fa fa-user"></i> <strong>Ism:</strong> {{ request.user.first_name }} {{ request.user.last_name }}
+          </p>
+          <p><i class="fa fa-user-tag"></i> <strong>Foydalanuvchi nomi:</strong> {{ request.user.username }}</p>
+          <p><i class="fa fa-phone"></i> <strong>Telefon:</strong> {{ request.user.phone }}</p>
+          <p><i class="fa fa-envelope"></i> <strong>Email:</strong> {{ request.user.email }}</p>
+        </div>
+
+        <!-- 2. Guruh -->
+        <div class="tab-pane fade" id="group">
+          {% if student_group %}
+          <p><i class="fa fa-book"></i> <strong>Guruh nomi:</strong> {{ student_group.name }}</p>
+          <p><i class="fa fa-clock"></i> <strong>Dars vaqti:</strong> {{ student_group.lesson_start_time }}</p>
+          <p>
+  <i class="fa fa-chalkboard-teacher"></i> 
+  <strong>O‘qituvchi:</strong> {{ student_group.teacher.first_name }} {{ student_group.teacher.last_name }}
+</p>
+          {% else %}
+          <div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> Siz hali guruhga
+            biriktirilmagansiz.</div>
+          {% endif %}
+        </div>
+
+        <!-- 3. Davomat -->
+        <div class="tab-pane fade" id="attendance">
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <div class="card rounded-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="text-success">
+            <i class="fa fa-calendar-week"></i> Haftalik Davomat
+          </h5>
+          <p class="mb-0">
+            Kelgan: <strong>{{ weekly_present }}</strong> / {{ weekly_total }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card rounded-4 shadow-sm">
+        <div class="card-body">
+          <h5 class="text-info">
+            <i class="fa fa-calendar-days"></i> Oylik Davomat
+          </h5>
+          <p class="mb-0">
+            Kelgan: <strong>{{ monthly_present }}</strong> / {{ monthly_total }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h5 class="mt-4">
+    <i class="fa fa-list"></i> Barcha Davomatlar
+  </h5>
+
+  {% if attendances %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-striped align-middle rounded-4 shadow-sm">
+        <thead class="table-primary">
+          <tr>
+            <th>#</th>
+            <th>Sana</th>
+            <th>Guruh</th>
+            <th>Holat</th>
+            <th>Baho</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in attendances %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ a.date }}</td>
+              <td>{{ a.group.name }}</td>
+              <td>
+                {% if a.status == 'present' %}
+                  <span class="badge bg-success">Keldi</span>
+                {% else %}
+                  <span class="badge bg-danger">Kelmagan</span>
+                {% endif %}
+              </td>
+              <td>{{ a.score|default:"-" }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-warning rounded-4 shadow-sm mt-3">
+      Davomat ma’lumotlari mavjud emas.
+    </div>
+  {% endif %}
+
+</div>
+
+
+        <!-- 4. Bildirishnomalar -->
+        <div class="tab-pane fade" id="notifications">
+          {% if notifications %}
+          <ul class="list-group">
+            {% for note in notifications %}
+            <li class="list-group-item d-flex justify-content-between">
+              <span><i class="fa fa-bell"></i> {{ note.message }}</span>
+              <span class="text-muted small">{{ note.created_at|date:"d-m-Y H:i" }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p class="text-muted">Bildirishnomalar yo‘q.</p>
+          {% endif %}
+        </div>
+
+      <!-- 5. NANOcoin -->
+<!-- 5. Coin bo‘limi -->
+<div class="tab-pane fade" id="coin">
+  <div class="card bg-warning-subtle border border-warning mb-4">
+    <div class="card-body">
+      <h5 class="text-warning mb-2">
+        <i class="fa fa-coins"></i> Jami olingan coinlar:
+        <strong>{{ earned_total }}</strong>
+      </h5>
+      <h5 class="text-dark mb-3">
+        <i class="fa fa-wallet"></i> Qolgan coin:
+        <strong>{{ nanocoin }}</strong> | Jami pul:
+        <strong>{{ cash_total }} so‘m</strong> | Balans:
+        <strong>{{ cash_balance }} so‘m</strong>
+      </h5>
+
+      <h6 class="text-dark">📝 Coin tranzaksiyalari:</h6>
+      <ul class="list-group mb-3">
+        {% for tx in coin_tx %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ tx.reason }}</strong><br>
+              <small class="text-muted">{{ tx.created_at|date:"d.m.Y H:i" }}</small>
+            </div>
+            <span class="fw-bold {% if tx.amount < 0 %}text-danger{% else %}text-success{% endif %}">
+              {{ tx.amount }}
+            </span>
+          </li>
+        {% empty %}
+          <li class="list-group-item text-muted">Hozircha coin tranzaksiya yo‘q.</li>
+        {% endfor %}
+      </ul>
+
+  
+      <ul class="list-group mb-3">
+        {% for cash in cash_tx %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ cash.reason }}</strong><br>
+              <small class="text-muted">{{ cash.created_at|date:"d.m.Y H:i" }}</small>
+            </div>
+            <span class="fw-bold text-success">{{ cash.amount }} so‘m</span>
+          </li>
+        {% empty %}
+         
+        {% endfor %}
+      </ul>
+
+      <h6 class="text-dark mb-2">🔁 Coin’ni pulga almashtirish:</h6>
+      <form method="post" action="{% url 'coins:convert_coins' %}">
+        {% csrf_token %}
+        <div class="row g-2 mb-2">
+          <div class="col-md-6">
+            <input
+              type="number"
+              name="amount"
+              class="form-control"
+              placeholder="Coin miqdorini kiriting"
+              max="{{ nanocoin }}"
+              min="1"
+              required
+            >
+          </div>
+          <div class="col-md-6">
+            <button type="submit" class="btn btn-success w-100">
+              <i class="fa fa-exchange-alt"></i> Almashtirish
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div class="alert alert-info mt-3">
+        1 coin = 1000 so‘m
+      </div>
+      <form method="post" action="{% url 'coins:clear_history' %}">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger btn-sm mt-2">
+    <i class="fa fa-trash"></i> Tarixni tozalash
+  </button>
+</form>
+<form method="post" action="{% url 'coins:reset_balance' %}" onsubmit="return confirm('Rostdan ham balansni 0 qilmoqchimisiz?')">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-danger btn-sm mt-2">
+    <i class="fa fa-trash"></i> Balansni 0 qilish
+  </button>
+</form>
+
+    </div>
+  </div>
+</div>
+
+<!-- 6. Testlar -->
+<!-- 6. Testlar -->
+<div class="tab-pane fade" id="tests">
+  <h5 class="text-primary mb-3 fw-semibold">
+    <i class="fa fa-book me-2"></i> Biriktirilgan testlar
+  </h5>
+  {% if assigned_tests %}
+    <div class="list-group">
+      {% for st in assigned_tests %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <div>
+            <strong>{{ st.test.title }}</strong><br>
+            <small class="text-muted">{{ st.test.description|default:"Izoh yo‘q" }}</small>
+          </div>
+          <div>
+            {% if st.is_completed %}
+              <span class="badge bg-success rounded-pill px-3 py-2">✅ Yechilgan</span>
+            {% elif st.is_active %}
+              <a href="{% url 'users:take_test' st.test.id %}" class="btn btn-primary btn-sm rounded-pill px-3">
+                ▶ Boshlash
+              </a>
+            {% else %}
+              <span class="badge bg-secondary rounded-pill px-3 py-2">🚫 Bloklangan</span>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-warning mt-3 rounded-3">
+      Sizga hech qanday test biriktirilmagan.
+    </div>
+  {% endif %}
+  <div class="mb-3">
+  <form method="post" action="{% url 'users:refresh_tests' %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-warning rounded-pill px-3 me-2">
+      🔄 Testlarni yangilash
+    </button>
+  </form>
+
+  <form method="post" action="{% url 'users:delete_all_tests' %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger rounded-pill px-3">
+      🗑 Barchasini o‘chirish
+    </button>
+  </form>
+</div>
+</div>
+
+<!-- 7. Test natijalari -->
+<div class="tab-pane fade" id="results">
+  <h5 class="text-primary mb-3 fw-semibold">
+    <i class="fa fa-chart-bar me-2"></i> Test natijalari
+  </h5>
+  {% if test_results %}
+    <div class="table-responsive">
+      <table class="table table-striped align-middle rounded-3 overflow-hidden shadow-sm">
+        <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Test</th>
+            <th>Ball</th>
+            <th>Coin</th>
+            <th>Sana</th>
+            <th>Amal</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in test_results %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ r.test.title }}</td>
+              <td>
+                <span class="badge bg-info text-dark rounded-pill px-3 py-2">{{ r.score }}%</span>
+              </td>
+              <td>
+                <span class="badge bg-warning text-dark rounded-pill px-3 py-2">+{{ r.earned_coins }}</span>
+              </td>
+              <td>{{ r.completed_at|date:"d.m.Y" }}</td>
+              <td>
+             <form method="post" action="{% url 'users:delete_test_result' r.id %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger btn-sm rounded-pill px-3">
+        <i class="fa fa-trash"></i> O‘chirish
+    </button>
+</form>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="alert alert-info mt-3 rounded-3">
+      Siz hali hech qanday test ishlamagansiz.
+    </div>
+  {% endif %}
+</div>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const hash = window.location.hash;
+    if (hash) {
+      const triggerEl = document.querySelector(`button[data-bs-target="${hash}"]`);
+      if (triggerEl) new bootstrap.Tab(triggerEl).show();
+    }
+  </script>
+</body>
+
+</html>

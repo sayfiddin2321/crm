@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>✏️ Ma’lumotni tahrirlash</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .edit-body {
+            background-color: #e6f0ff;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #333;
+            padding: 5px;
+        }
+
+        .edit-back-btn {
+            color: #0d6efd;
+            padding: 10px 25px;
+            font-size: 1.7rem;
+            border-radius: 8px;
+            text-decoration: none;
+            display: block;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+
+        .edit-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .edit-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 30px 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .edit-title {
+            font-size: 24px;
+            color: #0d6efd;
+            margin-bottom: 25px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .edit-field {
+            margin-bottom: 18px;
+        }
+
+        .edit-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #0d6efd;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .edit-field input,
+        .edit-field select,
+        .edit-field textarea {
+            width: 100%;
+            border: 1px solid #ced4da;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 15px;
+            transition: border 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .edit-field input:focus,
+        .edit-field select:focus,
+        .edit-field textarea:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 5px rgba(13, 110, 253, 0.4);
+            outline: none;
+        }
+
+        .edit-help {
+            font-size: 13px;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+
+        .edit-error {
+            font-size: 13px;
+            color: #dc3545;
+            margin-top: 4px;
+        }
+
+        .edit-save-btn {
+            width: 100%;
+            background-color: #0d6efd;
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-size: 16px;
+        }
+
+        .edit-save-btn:hover {
+            background-color: #0b5ed7;
+        }
+
+        @media(max-width:600px) {
+            .edit-card {
+                padding: 20px 15px;
+                margin: 15px;
+                margin-top: 50px;
+            }
+
+            .edit-title {
+                font-size: 20px;
+            }
+
+            .edit-label {
+                font-size: 14px;
+            }
+
+            .edit-back-btn {
+                display: block;
+            }
+
+            .edit-save-btn {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body class="edit-body">
+
+    <a href="/" class="edit-back-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+    </a>
+
+    <div class="edit-container">
+        <div class="edit-card">
+            <h2 class="edit-title">
+                <i class="fa-solid fa-pen-to-square"></i> Ma’lumotni tahrirlash
+            </h2>
+            <form method="post" enctype="multipart/form-data" novalidate>
+                {% for field in form %}
+                <div class="edit-field">
+                    <label for="{{ field.id_for_label }}" class="edit-label">
+                        {% if field.name == "username" %}
+                        <i class="fa-solid fa-user"></i>
+                        {% elif field.name == "first_name" %}
+                        <i class="fa-solid fa-id-badge"></i>
+                        {% elif field.name == "last_name" %}
+                        <i class="fa-solid fa-id-badge"></i>
+                        {% elif field.name == "email" %}
+                        <i class="fa-solid fa-envelope"></i>
+                        {% elif field.name == "phone" %}
+                        <i class="fa-solid fa-phone"></i>
+                        {% elif field.name == "image" %}
+                        <i class="fa-solid fa-image"></i>
+                        {% else %}
+                        <i class="fa-solid fa-circle-info"></i>
+                        {% endif %}
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <div class="edit-help">{{ field.help_text }}</div>
+                    {% endif %}
+                    {% if field.errors %}
+                    <div class="edit-error">{{ field.errors|striptags }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="edit-save-btn">
+                    <i class="fa-solid fa-circle-check"></i> Saqlash
+                </button>
+
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👨‍🏫 O‘qituvchi qo‘shish</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<style>
+    body {
+        background: linear-gradient(135deg, #f0f4ff, #e8ffe8);
+        min-height: 96vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        font-family: 'Segoe UI', sans-serif;
+        padding: 10px;
+    }
+
+    .form-card {
+        max-width: 600px;
+        width: 100%;
+        background-color: #ffffff;
+        border-radius: 18px;
+        padding: 30px 20px;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease;
+        position: relative;
+    }
+
+    .form-card h2 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #0d6efd;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .form-label {
+        font-weight: 600;
+        margin-bottom: 5px;
+        display: block;
+        color: #333;
+    }
+
+    .form-control,
+    .form-select {
+        width: 95%;
+        border-radius: 10px;
+        padding: 10px 15px;
+        background-color: #f8f9fa;
+        border: 1px solid #ccc;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        font-size: 1rem;
+    }
+
+    .save-btn {
+        display: block;
+        width: 100%;
+        background: #0d6efd; /* ko‘k rang */
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .save-btn:hover {
+        background: #0b5ed7;
+    }
+
+    .back-link {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        text-decoration: none;
+        background: #0d6efd;
+        color: #fff;
+        padding: 5px 25px;
+        border-radius: 6px;
+        font-size: 1.4rem;
+        transition: background 0.3s;
+    }
+
+
+
+    .field-icon {
+        margin-right: 8px;
+        color: #0d6efd;
+    }
+
+    .error-message {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 4px;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 480px) {
+        .form-card {
+            padding: 0px 25px;
+        }
+        .form-card h2 {
+            font-size: 1.5rem;
+        }
+        .save-btn {
+            font-size: 1rem;
+            padding: 10px 16px;
+            margin-bottom: 10px;
+        }
+        .back-link {
+            font-size: 1.3rem;
+            padding: 6px 20px;
+        }
+        .form-control {
+            width: 90%;
+        }
+    }
+</style>
+
+    
+</head>
+
+<body>
+  
+    <div class="form-card">
+    <!-- Back icon -->
+    <a href="javascript:history.back()" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <h2><i class="fa fa-chalkboard-teacher"></i> O‘qituvchi qo‘shish</h2>
+
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}" class="form-label">
+                    {% if field.name == "first_name" %}
+                    <i class="fa-solid fa-user field-icon"></i>
+                    {% elif field.name == "last_name" %}
+                    <i class="fa-solid fa-user field-icon"></i>
+                    {% elif field.name == "phone" %}
+                    <i class="fa-solid fa-phone field-icon"></i>
+                    {% elif field.name == "email" %}
+                    <i class="fa-solid fa-envelope field-icon"></i>
+                    {% elif field.name == "username" %}
+                    <i class="fa-solid fa-user-tag field-icon"></i>
+                    {% elif field.name == "password" %}
+                    <i class="fa-solid fa-lock field-icon"></i>
+                    {% elif field.name == "profile_image" %}
+                    <i class="fa-solid fa-image field-icon"></i>
+                    {% else %}
+                    <i class="fa-solid fa-circle-info field-icon"></i>
+                    {% endif %}
+                    {{ field.label }}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                <div class="error-message">{{ field.errors|striptags }}</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <button type="submit" class="save-btn">
+                <i class="fa-solid fa-floppy-disk"></i> Saqlash
+            </button>
+        </form>
+    </div>
+
+</body>
+
+</html>

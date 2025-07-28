@@ -1,0 +1,89 @@
+/* Umumiy konteyner */
+.form-wrapper {
+    max-width: 640px;
+    margin: 60px auto;
+    padding: 40px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.6s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Sarlavha */
+.form-wrapper h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #0d6efd;
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+/* Label */
+.form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+
+/* Inputlar */
+.form-control,
+.form-select {
+    border-radius: 12px;
+    padding: 12px 16px;
+    border: 1px solid #ced4da;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #80bdff;
+    background-color: #fff;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.1);
+    outline: none;
+}
+
+/* Submit tugma */
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    background-color: #198754;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+    background-color: #157347;
+}
+
+/* Xatoliklar */
+.text-danger {
+    font-size: 0.875rem;
+    margin-top: 6px;
+    color: #dc3545;
+}
+
+/* Select multiple uchun o‘zgarish */
+select[multiple] {
+    height: auto;
+    min-height: 120px;
+}
+
+/* Animatsiya */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

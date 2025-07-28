@@ -1,0 +1,26 @@
+<h1>Yagona boshqaruv sahifasi</h1>
+
+<h2>O‘qituvchi qo‘shish</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ teacher_form.as_p }}
+    <button type="submit" name="add_teacher">O‘qituvchi qo‘shish</button>
+</form>
+
+<hr>
+
+<h2>O‘quvchi qo‘shish</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ student_form.as_p }}
+    <button type="submit" name="add_student">O‘quvchi qo‘shish</button>
+</form>
+
+<hr>
+
+<h2>Guruh qo‘shish</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ group_form.as_p }}
+    <button type="submit" name="add_group">Guruh qo‘shish</button>
+</form>
